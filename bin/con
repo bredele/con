@@ -11,12 +11,14 @@ var read = fs.readFileSync;
 var write = fs.writeFile;
 var resolve = require('path').resolve;
 var program = require('commander');
+var increment = require('semver').inc;
 var utils = require('../utils/utils');
 var commands = [
  'get',
  'set',
  'enable',
- 'disable'
+ 'disable',
+ 'bump'
 ];
 
 
