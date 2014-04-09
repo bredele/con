@@ -1,0 +1,23 @@
+{
+  "name": "con",
+  "version": "0.0.0",
+  "description": "JSON from your console",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bredele/con.git"
+  },
+  "keywords": [
+    "json",
+    "console"
+  ],
+  "author": "Olivier Wietrich <olivier.wietrich@gmail.com> (http://github.com/bredele)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bredele/con/issues"
+  },
+  "homepage": "https://github.com/bredele/con"
+}
