@@ -1,0 +1,89 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ * @api private
+ */
+
+var Store = require('datastore');
+var fs = require('fs');
+var read = fs.readFileSync;
+var write = fs.writeFile;
+var resolve = require('path').resolve;
+var program = require('commander');
+var utils = require('../utils/utils');
+var commands = [
+ 'get',
+ 'set',
+ 'enable',
+ 'disable'
+];
+
+
+
+/**
+ * Usage.
+ */
+
+program
+  .version(require('../package.json').version)
+  .usage('[<file>]');
+
+
+
+/**
+ * Examples.
+ */
+
+program.on('--help', function () {
+  console.log('  Examples:');
+});
+
+
+/**
+ * Parse.
+ */
+
+program.parse(process.argv);
+
+
+
+/**
+ * Settings.
+ */
+
+var name = program.args[0];
+var command = program.args[1];
+var macro = [].slice.call(program.args, 2);
+
+
+try {
+  var file = require(resolve('.', name));
+} catch (e) {
+	utils.fatal( name + " is not a json file");
+}
+
+var data = new Store(file);
+data.use(function(ctx) {
+	ctx.enable = function(name) {
+		this.set(name, true);
+	};
+
+	ctx.disable = function() {
+		this.set(name, false);
+	};
+});
+
+if(commands.indexOf(command) > -1) {
+	data[command].call(data, macro[0], macro[1]);
+	var result = data.get(macro[0]);
+	if(result) {
+		console.log('     \033[33m%s\033[m', command);
+		utils.log(macro[0], data.get(macro[0]));
+	} else {
+		utils.error(macro[0] + " doesn't exist");
+	}
+	process.exit();
+}
+console.log(data.data);
+
