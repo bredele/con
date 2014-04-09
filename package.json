@@ -1,6 +1,6 @@
 {
   "name": "con",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "JSON from your console",
   "main": "index.js",
   "repository": {

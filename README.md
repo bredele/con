@@ -2,7 +2,7 @@
 
   > JSON in your console
 
- Con is a french bad word but it's also a shell command line to manipulate JSON directly from your console. 
+ Con is a french bad word but it's also a cli to manipulate JSON directly from your console. 
 
 
 ## Installation
