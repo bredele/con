@@ -6,14 +6,14 @@
  * @api private
  */
 
-var Store = require('datastore');
 var fs = require('fs');
 var read = fs.readFileSync;
 var write = fs.writeFileSync;
 var resolve = require('path').resolve;
 var program = require('commander');
-var increment = require('semver').inc;
 var utils = require('../utils/utils');
+var command = require('./command');
+var pretty = require('prettyjson');
 var commands = [
  'get',
  'set',
@@ -39,7 +39,24 @@ program
  */
 
 program.on('--help', function () {
-  console.log('  Examples:');
+  console.log('  Examples:');  
+  console.log();
+  console.log('    # get name attribute:');
+  console.log('    $ con file.json get name');
+  console.log();
+  console.log('    # set name attribute:');
+  console.log('    $ con file.json set name bredele');
+  console.log();
+  console.log('    # enable awesome attribute:');
+  console.log('    $ con file.json enable awesome');
+  console.log();
+  console.log('    # disable awesome attribute:');
+  console.log('    $ con file.json disable awesome');
+  console.log();
+  console.log('    # bump version');
+  console.log('    $ con file.json bump');
+
+
 });
 
 
@@ -55,9 +72,8 @@ program.parse(process.argv);
  * Settings.
  */
 
-var name = program.args[0];
-var command = program.args[1];
-var macro = [].slice.call(program.args, 2);
+var name = program.args.splice(0,1)[0];
+
 
 var path = resolve('.', name);
 
@@ -67,45 +83,18 @@ try {
 	utils.fatal( name + " is not a json file");
 }
 
-var store = new Store(file);
-store.use(function(ctx) {
-	ctx.enable = function(name) {
-		this.set(name, true);
-	};
-
-	ctx.disable = function() {
-		this.set(name, false);
-	};
-});
-
-if(commands.indexOf(command) > -1) {
-
-	//special
-	if(command === 'bump') {
-		var version = macro[0];
-		if (!~version.indexOf('.')) {
-		  version = increment(files[file].version, version);
-		} 
-		store.set('version', version);
-		macro[0] = 'version';
-	} else {
-		//store methods
-		store[command].call(store, macro[0], macro[1]);
-	}
-
-	var result = store.get(macro[0]);
-	if(result) {
-		console.log('     \033[33m%s\033[m', command);
-		utils.log(macro[0], store.get(macro[0]));
-
-
-	} else {
-		utils.error(macro[0] + " doesn't exist");
-	}
-
-	//store toJSON doesn't add spaces (we should have args)
-	write(path, store.toJSON(null, 2));
+if(commands.indexOf(program.args[0]) > -1) {
+	console.log();
+	write(path, command.apply(null, [file].concat(program.args)));
+	console.log();
 	process.exit();
-}
-console.log(data.data);
+} 
+console.log();
+console.log(pretty.render(file, {
+	keysColor: 'blue',
+  dashColor: 'magenta',
+  stringColor: 'grey'
+}));
+process.exit();
+
 

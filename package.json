@@ -1,6 +1,6 @@
 {
   "name": "con",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "JSON from your console",
   "main": "index.js",
   "repository": {
@@ -23,6 +23,7 @@
   "dependencies": {
     "commander": "^2.2.0",
     "datastore": "^1.0.1",
+    "prettyjson": "^1.0.0",
     "semver": "^2.2.1"
   }
 }
