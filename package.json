@@ -1,6 +1,6 @@
 {
   "name": "con",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "JSON from your console",
   "main": "index.js",
   "repository": {
@@ -22,7 +22,7 @@
   "homepage": "https://github.com/bredele/con",
   "dependencies": {
     "commander": "^2.2.0",
-    "datastore": "^1.0.0",
+    "datastore": "^1.0.1",
     "semver": "^2.2.1"
   }
 }

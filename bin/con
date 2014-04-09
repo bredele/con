@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+
 /**
  * Module dependencies.
  * @api private
@@ -8,7 +9,7 @@
 var Store = require('datastore');
 var fs = require('fs');
 var read = fs.readFileSync;
-var write = fs.writeFile;
+var write = fs.writeFileSync;
 var resolve = require('path').resolve;
 var program = require('commander');
 var increment = require('semver').inc;
@@ -58,15 +59,16 @@ var name = program.args[0];
 var command = program.args[1];
 var macro = [].slice.call(program.args, 2);
 
+var path = resolve('.', name);
 
 try {
-  var file = require(resolve('.', name));
+  var file = require(path);
 } catch (e) {
 	utils.fatal( name + " is not a json file");
 }
 
-var data = new Store(file);
-data.use(function(ctx) {
+var store = new Store(file);
+store.use(function(ctx) {
 	ctx.enable = function(name) {
 		this.set(name, true);
 	};
@@ -77,14 +79,32 @@ data.use(function(ctx) {
 });
 
 if(commands.indexOf(command) > -1) {
-	data[command].call(data, macro[0], macro[1]);
-	var result = data.get(macro[0]);
+
+	//special
+	if(command === 'bump') {
+		var version = macro[0];
+		if (!~version.indexOf('.')) {
+		  version = increment(files[file].version, version);
+		} 
+		store.set('version', version);
+		macro[0] = 'version';
+	} else {
+		//store methods
+		store[command].call(store, macro[0], macro[1]);
+	}
+
+	var result = store.get(macro[0]);
 	if(result) {
 		console.log('     \033[33m%s\033[m', command);
-		utils.log(macro[0], data.get(macro[0]));
+		utils.log(macro[0], store.get(macro[0]));
+
+
 	} else {
 		utils.error(macro[0] + " doesn't exist");
 	}
+
+	//store toJSON doesn't add spaces (we should have args)
+	write(path, store.toJSON(null, 2));
 	process.exit();
 }
 console.log(data.data);

@@ -5,7 +5,6 @@
  Con is a french bad word but it's also a shell command line to manipulate JSON directly from your console. 
 
 
-
 ## Installation
 
  Install with [nodejs](http://nodejs.org):
@@ -36,11 +35,40 @@ Examples:
   
 ```
 
+### Bump
+
+ Con use [node-semver](https://github.com/isaacs/node-semver), the semantic versioner of npm.
+
+minor:
+```
+  con file.json bump minor
+```
+
+major:
+```
+  con file.json bump major
+```
+
+patch:
+```
+  con file.json bump patch
+```
+
+prerelease:
+```
+  con file.json bump patch
+```
+
+custom:
+```
+  con file.json bump 0.1.1
+```
+
 ## License
 
   The MIT License (MIT)
 
-  Copyright (c) 2014 <copyright holders>
+  Copyright (c) 2014 <olivier.wietrich@gmail.com>
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
