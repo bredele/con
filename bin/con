@@ -14,6 +14,14 @@ var program = require('commander');
 var utils = require('../utils/utils');
 var command = require('./command');
 var pretty = require('prettyjson');
+var Emitter = require('component-emitter');
+require('emitter-queue')(Emitter.prototype);
+
+
+/**
+ * files and commands.
+ */
+
 var commands = [
  'get',
  'set',
@@ -21,6 +29,7 @@ var commands = [
  'disable',
  'bump'
 ];
+var files = ['package.json', 'component.json', 'bower.json'];
 
 
 
@@ -72,29 +81,36 @@ program.parse(process.argv);
  * Settings.
  */
 
-var name = program.args.splice(0,1)[0];
+var error = new Emitter();
+var name = program.args[0];
+var cmd = name;
+var params = program.args;
 
-
-var path = resolve('.', name);
-
-try {
-  var file = require(path);
-} catch (e) {
-	utils.fatal( name + " is not a json file");
+if(!~commands.indexOf(name)) {
+  files = [name];
+  cmd = program.args[1];
+  params.shift();
 }
 
-if(commands.indexOf(program.args[0]) > -1) {
-	console.log();
-	write(path, command.apply(null, [file].concat(program.args)));
-	console.log();
-	process.exit();
-} 
+files.forEach(function(val) {
+  var path = resolve('.', val);
+
+  try {
+    var file = require(path);
+  } catch (e) {
+    return error.queue('error', val);
+  }
+
+  if(commands.indexOf(cmd) > -1) {
+    console.log();
+    write(path, command.apply(null, [file, val].concat(params)));
+    console.log();
+  } 
+});
+error.on('error', function(name) {
+  utils.warn('warning', name + " doesn't exist");
+});
 console.log();
-console.log(pretty.render(file, {
-	keysColor: 'blue',
-  dashColor: 'magenta',
-  stringColor: 'grey'
-}));
 process.exit();
 
 

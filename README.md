@@ -35,9 +35,15 @@ Examples:
   
 ```
 
+If `file` is not specified, con will automatically look for `component.json`, `bower.json` and `package.json` and apply the command. Here's an example:
+
+```
+  con bump 0.2.0
+```
+
 ### Bump
 
- Con use [node-semver](https://github.com/isaacs/node-semver), the semantic versioner of npm.
+ Con use [node-semver](https://github.com/isaacs/node-semver), the semantic versioner of npm. You also can use [bump](https://github.com/ianstormtaylor/bump) if you just need to bump the version of your files.
 
 minor:
 ```

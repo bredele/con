@@ -3,7 +3,7 @@ module.exports.error = function(msg){
   var type = 'error';
   var len = Math.max(0, w - type.length);
   var pad = Array(len + 1).join(' ');
-  console.error('  \033[31m%s\033[m : \033[90m%s\033[m', pad + type, msg);
+  console.error('\033[31m%s\033[m : \033[90m%s\033[m', pad + type, msg);
 }
 
 module.exports.fatal = function(){
@@ -15,10 +15,10 @@ module.exports.fatal = function(){
 
 module.exports.log = function(type, msg, color){
   color = color || '32';
-  var w = 10;
+  var w = 7;
   var len = Math.max(0, w - type.length);
   var pad = Array(len + 1).join(' ');
-  console.log('  \033[' + color + 'm%s\033[m : \033[90m%s\033[m', pad + type, msg);
+  console.log('\033[' + color + 'm%s\033[m : \033[90m%s\033[m', pad + type, msg);
 }
 
 module.exports.warn = function(type, msg){
