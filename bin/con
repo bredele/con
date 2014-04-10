@@ -27,6 +27,7 @@ var commands = [
  'set',
  'enable',
  'disable',
+ 'path',
  'bump'
 ];
 var files = ['package.json', 'component.json', 'bower.json'];
