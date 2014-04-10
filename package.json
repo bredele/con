@@ -1,6 +1,6 @@
 {
   "name": "con",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "JSON from your console",
   "main": "index.js",
   "repository": {
@@ -26,6 +26,7 @@
     "datastore": "^1.0.1",
     "emitter-queue": "^0.1.2",
     "prettyjson": "^1.0.0",
-    "semver": "^2.2.1"
+    "semver": "^2.2.1",
+    "store-path": "^0.1.0"
   }
 }
