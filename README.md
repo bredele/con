@@ -41,6 +41,20 @@ If `file` is not specified, con will automatically look for `component.json`, `b
   con bump 0.2.0
 ```
 
+### Nested properties
+
+ You also can set/get nested properties:
+
+set:
+```
+  con file.json path author.name 'bredele'
+```
+
+get:
+```
+  con file.json path author.name
+```
+
 ### Bump
 
  Con use [node-semver](https://github.com/isaacs/node-semver), the semantic versioner of npm. You also can use [bump](https://github.com/ianstormtaylor/bump) if you just need to bump the version of your files.
